@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Leaf, PackageCheck, Phone, Snowflake } from "lucide-react";
 import { LinkButton } from "@/components/ui/button";
+import { publicAsset } from "@/lib/assets";
 
 export function PromoGraphic() {
   return (
@@ -10,7 +11,7 @@ export function PromoGraphic() {
           <div className="absolute left-0 top-0 h-28 w-28 rounded-br-full bg-leaf/15" />
           <div className="absolute bottom-0 right-0 h-36 w-36 rounded-tl-full bg-saffron/15" />
           <div className="relative z-10">
-            <Image src="/images/brand/main-logo.png" alt="Anurag Foods" width={280} height={170} className="h-auto w-48 rounded-md bg-white p-2 shadow-sm" />
+            <Image src={publicAsset("/images/brand/main-logo.png")} alt="Anurag Foods" width={280} height={170} className="h-auto w-48 rounded-md bg-white p-2 shadow-sm" />
             <p className="mt-8 text-sm font-black uppercase tracking-[0.2em] text-saffron">Premium frozen foods</p>
             <h2 className="mt-3 max-w-md text-5xl font-black leading-[0.98] text-tealDeep md:text-6xl">
               Great Taste,
@@ -40,7 +41,7 @@ export function PromoGraphic() {
           </div>
         </div>
         <div className="relative min-h-[340px] bg-tealDeep">
-          <Image src="/images/promos/anurag-foods-gfx-1.png" alt="Anurag Foods frozen snacks platter" fill sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover object-right" />
+          <Image src={publicAsset("/images/promos/anurag-foods-gfx-1.png")} alt="Anurag Foods frozen snacks platter" fill sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover object-right" />
           <div className="absolute inset-y-0 left-0 hidden w-40 bg-gradient-to-r from-tealDeep to-transparent lg:block" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-tealDeep/70 to-transparent" />
         </div>

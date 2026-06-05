@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Anurag Foods",
     description: "Premium Indian frozen foods for B2B and B2C supply.",
-    images: ["/images/brand/main-logo.png"]
+    images: ["https://akhundia275-beep.github.io/Anurag_Foods/images/brand/main-logo.png"]
   }
 };
 

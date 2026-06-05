@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { publicAsset } from "@/lib/assets";
 
 export function BrandHero() {
   return (
     <section className="bg-black">
       <div className="relative mx-auto w-full max-w-[1536px] overflow-hidden">
         <Image
-          src="/images/hero/anurag-foods-dark-hero.png"
+          src={publicAsset("/images/hero/anurag-foods-dark-hero.png")}
           alt="Anurag Foods premium frozen snacks hero"
           width={1536}
           height={1024}

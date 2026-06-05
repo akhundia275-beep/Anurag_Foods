@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { LinkButton } from "@/components/ui/button";
+import { publicAsset } from "@/lib/assets";
 
 export const metadata: Metadata = { title: "Founder Story" };
 
@@ -8,7 +9,7 @@ export default function FounderPage() {
   return (
     <section className="container-pad grid gap-10 py-14 lg:grid-cols-[0.9fr_1.1fr]">
       <div className="relative overflow-hidden rounded-lg bg-white shadow-soft">
-        <Image src="/images/brand/founder.png" alt="Ranjan Kumar, founder of Anurag Foods" width={980} height={1260} className="h-full w-full object-cover" priority />
+        <Image src={publicAsset("/images/brand/founder.png")} alt="Ranjan Kumar, founder of Anurag Foods" width={980} height={1260} className="h-full w-full object-cover" priority />
       </div>
       <div className="self-center">
         <p className="text-sm font-black uppercase tracking-[0.22em] text-saffron">Founder Story</p>

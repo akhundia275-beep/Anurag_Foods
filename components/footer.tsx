@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Building2, ChefHat, HelpCircle, Home, Leaf, MessageCircle, PackageCheck, Phone, ShoppingBag, Truck, UserRound } from "lucide-react";
 import { useState } from "react";
+import { publicAsset } from "@/lib/assets";
 
 const companyLinks = [
   { label: "About Us", href: "/about" },
@@ -53,7 +54,7 @@ export function Footer() {
       <div className="footer-glow" />
       <div className="footer-image-shell">
         <Image
-          src="/uploads/Footer_Image.png"
+          src={publicAsset("/uploads/Footer_Image.png")}
           alt="Anurag Foods premium snacks and dumplings"
           fill
           sizes="100vw"

@@ -7,6 +7,7 @@ import { MapPin, Menu, Search, ShoppingCart, UserRound, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/store/cart";
 import { useAuth } from "@/store/auth";
+import { publicAsset } from "@/lib/assets";
 
 const links = [
   ["Products", "/products"],
@@ -27,7 +28,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-[#e9e9eb] bg-white shadow-sm">
       <div className="container-pad flex h-20 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/images/brand/main-logo.png" alt="Anurag Foods logo" width={132} height={78} className="h-12 w-auto object-contain" priority />
+          <Image src={publicAsset("/images/brand/main-logo.png")} alt="Anurag Foods logo" width={132} height={78} className="h-12 w-auto object-contain" priority />
         </Link>
         <div className="hidden min-w-44 items-center gap-2 text-sm font-bold text-tealDeep lg:flex">
           <MapPin className="h-5 w-5 text-saffron" />

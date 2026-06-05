@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ImageIcon } from "lucide-react";
 import { FoodIllustration } from "@/components/food-illustrations";
+import { publicAsset } from "@/lib/assets";
 import type { Product } from "@/lib/products";
 
 export function ProductImage({ product, priority = false }: { product: Product; priority?: boolean }) {
@@ -31,7 +32,7 @@ export function ProductImage({ product, priority = false }: { product: Product; 
 
   return (
     <Image
-      src={product.image}
+      src={publicAsset(product.image)}
       alt={product.name}
       fill
       sizes="(max-width: 768px) 100vw, 33vw"
