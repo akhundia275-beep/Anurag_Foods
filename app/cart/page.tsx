@@ -10,10 +10,35 @@ import { formatPrice } from "@/lib/products";
 import { useCart } from "@/store/cart";
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem } = useCart();
+  const { items, hasHydrated, updateQuantity, removeItem } = useCart();
   const bill = getBillTotals(items);
   const canCheckout = bill.remainingMinimumValue === 0;
   const progress = Math.min(100, (bill.subtotal / minimumOrderValue) * 100);
+
+  if (!hasHydrated) {
+    return (
+      <section className="container-pad py-12 md:py-14">
+        <div className="h-4 w-32 animate-pulse rounded-full bg-saffron/20" />
+        <div className="mt-3 h-14 w-48 animate-pulse rounded-lg bg-tealInk/10" />
+        <div className="mt-8 grid items-start gap-8 lg:grid-cols-[1fr_360px]">
+          <div className="grid gap-4">
+            {[0, 1].map((item) => (
+              <div key={item} className="grid gap-4 rounded-[18px] bg-white p-4 shadow-soft sm:grid-cols-[120px_1fr] md:grid-cols-[132px_1fr_auto] md:items-center">
+                <div className="aspect-square animate-pulse rounded-[16px] bg-[#fff4ea]" />
+                <div className="grid gap-3">
+                  <div className="h-6 w-44 animate-pulse rounded-full bg-tealInk/10" />
+                  <div className="h-4 w-32 animate-pulse rounded-full bg-tealInk/10" />
+                  <div className="h-4 w-36 animate-pulse rounded-full bg-tealInk/10" />
+                </div>
+                <div className="h-12 w-28 animate-pulse rounded-lg bg-tealInk/10" />
+              </div>
+            ))}
+          </div>
+          <div className="h-80 animate-pulse rounded-[18px] bg-tealDeep/90 shadow-soft" />
+        </div>
+      </section>
+    );
+  }
 
   if (items.length === 0) {
     return (

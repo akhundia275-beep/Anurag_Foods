@@ -10,8 +10,10 @@ export function AddToCartPanel({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const addItem = useCart((state) => state.addItem);
+  const hasHydrated = useCart((state) => state.hasHydrated);
 
   const handleAdd = () => {
+    if (!hasHydrated) return;
     addItem(product, quantity);
     setAdded(true);
     window.setTimeout(() => setAdded(false), 1000);
@@ -27,8 +29,8 @@ export function AddToCartPanel({ product }: { product: Product }) {
         className="h-12 w-28 rounded-lg border border-tealDeep/15 bg-white px-4 font-bold"
       />
       <motion.div animate={added ? { scale: [1, 1.05, 1] } : {}}>
-        <Button onClick={handleAdd} variant={added ? "primary" : "orange"}>
-          {added ? "Added to cart" : "Add to cart"}
+        <Button onClick={handleAdd} variant={added ? "primary" : "orange"} disabled={!hasHydrated}>
+          {!hasHydrated ? "Loading cart..." : added ? "Added to cart" : "Add to cart"}
         </Button>
       </motion.div>
     </motion.div>

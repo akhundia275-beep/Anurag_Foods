@@ -19,7 +19,9 @@ const links = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const count = useCart((state) => state.items.reduce((total, item) => total + item.quantity, 0));
+  const hasHydrated = useCart((state) => state.hasHydrated);
+  const storedCount = useCart((state) => state.items.reduce((total, item) => total + item.quantity, 0));
+  const count = hasHydrated ? storedCount : 0;
   const { user, ready, hydrate, logout } = useAuth();
 
   useEffect(() => hydrate(), [hydrate]);

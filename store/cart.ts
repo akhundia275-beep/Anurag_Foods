@@ -11,10 +11,12 @@ export type CartItem = {
 
 type CartState = {
   items: CartItem[];
+  hasHydrated: boolean;
   addItem: (product: Product, quantity?: number) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   removeItem: (productId: string) => void;
   clear: () => void;
+  setHasHydrated: (hasHydrated: boolean) => void;
 };
 
 const cleanQuantity = (quantity: number) => Math.max(1, Math.floor(Number.isFinite(quantity) ? quantity : 1));
@@ -23,6 +25,7 @@ export const useCart = create<CartState>()(
   persist(
     (set) => ({
       items: [],
+      hasHydrated: false,
       addItem: (product, quantity = 1) =>
         set((state) => {
           const nextQuantity = cleanQuantity(quantity);
@@ -43,9 +46,16 @@ export const useCart = create<CartState>()(
             .filter((item) => item.quantity > 0)
         })),
       removeItem: (productId) => set((state) => ({ items: state.items.filter((item) => item.product.id !== productId) })),
-      clear: () => set({ items: [] })
+      clear: () => set({ items: [] }),
+      setHasHydrated: (hasHydrated) => set({ hasHydrated })
     }),
-    { name: "anurag_foods_cart" }
+    {
+      name: "anurag_foods_cart",
+      partialize: (state) => ({ items: state.items }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      }
+    }
   )
 );
 
