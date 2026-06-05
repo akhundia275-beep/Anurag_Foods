@@ -1,5 +1,5 @@
 import type { CartItem } from "@/store/cart";
-import { formatRupees, getBillTotals, type BillTotals } from "@/lib/billing";
+import { formatRupees, getBillTotals, gstLabel, type BillTotals } from "@/lib/billing";
 import { formatPrice } from "@/lib/products";
 
 export type CustomerDetails = {
@@ -52,7 +52,7 @@ export function buildWhatsAppMessage(orderId: string, customer: CustomerDetails,
     `Products:`,
     ...items.map((item) => `- ${item.product.name} (${item.product.weight}) x ${item.quantity} = Rs ${item.quantity * item.product.price}`),
     `Subtotal: ${formatRupees(bill.subtotal)}`,
-    `GST 18%: ${formatRupees(bill.gst)}`,
+    `${gstLabel}: ${formatRupees(bill.gst)}`,
     `Delivery: ${bill.delivery === 0 ? "Free" : formatRupees(bill.delivery)}`,
     `Bill Total: ${formatRupees(bill.grandTotal)}`,
     `UTR: ${customer.utr}`,
@@ -115,7 +115,7 @@ export function buildInvoiceHtml(order: LocalOrder) {
     </table>
     <section class="totals">
       <div class="line"><span>Subtotal</span><strong>${formatRupees(order.bill.subtotal)}</strong></div>
-      <div class="line"><span>GST 18%</span><strong>${formatRupees(order.bill.gst)}</strong></div>
+      <div class="line"><span>${gstLabel}</span><strong>${formatRupees(order.bill.gst)}</strong></div>
       <div class="line"><span>Delivery</span><strong>${order.bill.delivery === 0 ? "Free" : formatRupees(order.bill.delivery)}</strong></div>
       <div class="line grand"><span>Bill Total</span><span>${formatRupees(order.bill.grandTotal)}</span></div>
     </section>

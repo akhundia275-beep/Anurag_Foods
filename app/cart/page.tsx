@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { PackageCheck, ShoppingBag, Trash2 } from "lucide-react";
 import { Button, LinkButton } from "@/components/ui/button";
 import { ProductImage } from "@/components/product-image";
-import { formatRupees, freeDeliveryMinimum, getBillTotals, minimumOrderValue } from "@/lib/billing";
+import { formatRupees, freeDeliveryMinimum, getBillTotals, gstLabel, minimumOrderValue } from "@/lib/billing";
 import { formatPrice } from "@/lib/products";
 import { useCart } from "@/store/cart";
 
@@ -158,7 +158,7 @@ export default function CartPage() {
               <span>{formatRupees(bill.subtotal)}</span>
             </div>
             <div className="flex justify-between gap-3 text-white/75">
-              <span>GST 18%</span>
+              <span>{gstLabel}</span>
               <span>{formatRupees(bill.gst)}</span>
             </div>
             <div className="flex justify-between gap-3 text-white/75">

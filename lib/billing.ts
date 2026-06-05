@@ -2,7 +2,8 @@ import type { CartItem } from "@/store/cart";
 
 export const minimumOrderValue = 5000;
 export const freeDeliveryMinimum = 10000;
-export const gstRate = 0.18;
+export const gstRate = 0.05;
+export const gstLabel = "GST 5%";
 export const deliveryCharge = 200;
 
 export type BillTotals = {
