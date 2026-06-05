@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { PackageCheck, ShoppingBag, Trash2 } from "lucide-react";
 import { Button, LinkButton } from "@/components/ui/button";
 import { ProductImage } from "@/components/product-image";
-import { formatRupees, getBillTotals, minimumOrderValue } from "@/lib/billing";
+import { formatRupees, freeDeliveryMinimum, getBillTotals, minimumOrderValue } from "@/lib/billing";
 import { formatPrice } from "@/lib/products";
 import { useCart } from "@/store/cart";
 
@@ -128,7 +128,7 @@ export default function CartPage() {
             </div>
             <div>
               <p className="text-sm uppercase tracking-[0.18em] text-white/60">Order total</p>
-              <p className="text-xs font-bold text-white/50">Minimum subtotal: Rs 8,000</p>
+              <p className="text-xs font-bold text-white/50">Minimum subtotal: {formatRupees(minimumOrderValue)}</p>
             </div>
           </div>
 
@@ -165,6 +165,7 @@ export default function CartPage() {
               <span>Delivery</span>
               <span>{formatRupees(bill.delivery)}</span>
             </div>
+            <p className="text-xs text-white/55">Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal.</p>
             <div className="flex justify-between gap-3 border-t border-white/15 pt-2 text-white">
               <span>Bill total</span>
               <span>{formatRupees(bill.grandTotal)}</span>

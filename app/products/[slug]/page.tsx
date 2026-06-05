@@ -52,7 +52,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <p className="mt-4 text-xl text-tealInk/70">{product.weight}</p>
         <p className="mt-5 text-3xl font-black text-tealDeep">{formatPrice(product)}</p>
         <div className="mt-8 grid gap-3 rounded-lg bg-white p-5 shadow-soft">
-          <p>Minimum checkout subtotal: Rs 8,000</p>
+          <p>Minimum checkout subtotal: Rs 5,000</p>
+          <p>Free delivery above Rs 10,000 subtotal</p>
           <p>Storage: -18 deg C frozen storage</p>
           <p>Shelf life: 45 days</p>
           <p>Packaging: Food grade bulk-ready packs</p>

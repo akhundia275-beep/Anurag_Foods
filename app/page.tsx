@@ -8,7 +8,7 @@ import { LinkButton } from "@/components/ui/button";
 import { BadgePercent, Clock, Snowflake, Truck } from "lucide-react";
 
 const offers = [
-  ["Bulk Saver", "Rs 8,000 minimum", BadgePercent],
+  ["Bulk Saver", "Rs 5,000 minimum", BadgePercent],
   ["Frozen Ready", "-18 deg C", Snowflake],
   ["Fast Dispatch", "B2B supply", Truck],
   ["45 Day Shelf Life", "Packed fresh", Clock]

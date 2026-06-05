@@ -5,7 +5,7 @@ import Image from "next/image";
 import { CheckCircle2, Copy, Download, MessageCircle } from "lucide-react";
 import { FormEvent, useMemo, useState } from "react";
 import { Button, LinkButton } from "@/components/ui/button";
-import { formatRupees, getBillTotals, minimumOrderValue } from "@/lib/billing";
+import { formatRupees, freeDeliveryMinimum, getBillTotals, minimumOrderValue } from "@/lib/billing";
 import { buildInvoiceHtml, buildUpiUrl, buildWhatsAppMessage, createOrderId, saveLocalOrder, type CustomerDetails, type LocalOrder, upiId, upiPayeeName, whatsappNumber } from "@/lib/order";
 import { useCart } from "@/store/cart";
 
@@ -109,7 +109,7 @@ export default function CheckoutPage() {
           <div className="mt-5 grid gap-2 rounded-lg bg-white p-4 text-left text-sm font-bold text-tealInk shadow-sm">
             <div className="flex justify-between"><span>Subtotal</span><span>{formatRupees(submitted.order.bill.subtotal)}</span></div>
             <div className="flex justify-between"><span>GST 18%</span><span>{formatRupees(submitted.order.bill.gst)}</span></div>
-            <div className="flex justify-between"><span>Delivery</span><span>{formatRupees(submitted.order.bill.delivery)}</span></div>
+              <div className="flex justify-between"><span>Delivery</span><span>{submitted.order.bill.delivery === 0 ? "Free" : formatRupees(submitted.order.bill.delivery)}</span></div>
             <div className="flex justify-between border-t border-tealDeep/10 pt-2 text-lg"><span>Bill total</span><span>{formatRupees(submitted.order.bill.grandTotal)}</span></div>
           </div>
           <div className="mt-5 rounded-lg bg-leaf/10 p-4 text-sm font-bold text-tealInk">
@@ -188,8 +188,9 @@ export default function CheckoutPage() {
             <div className="mt-4 grid gap-2 text-sm font-bold text-white/75">
               <div className="flex justify-between"><span>Subtotal</span><span>{formatRupees(bill.subtotal)}</span></div>
               <div className="flex justify-between"><span>GST 18%</span><span>{formatRupees(bill.gst)}</span></div>
-              <div className="flex justify-between"><span>Delivery</span><span>{formatRupees(bill.delivery)}</span></div>
+              <div className="flex justify-between"><span>Delivery</span><span>{bill.delivery === 0 ? "Free" : formatRupees(bill.delivery)}</span></div>
             </div>
+            <p className="mt-3 text-xs font-bold text-white/55">Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal.</p>
           </div>
           <Button type="submit" variant="orange" className="mt-6 w-full">
             Confirm & send WhatsApp

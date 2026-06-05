@@ -1,6 +1,7 @@
 import type { CartItem } from "@/store/cart";
 
-export const minimumOrderValue = 8000;
+export const minimumOrderValue = 5000;
+export const freeDeliveryMinimum = 10000;
 export const gstRate = 0.18;
 export const deliveryCharge = 200;
 
@@ -18,7 +19,7 @@ export const getBillSubtotal = (items: CartItem[]) =>
 export const getBillTotals = (items: CartItem[]): BillTotals => {
   const subtotal = getBillSubtotal(items);
   const gst = Math.round(subtotal * gstRate * 100) / 100;
-  const delivery = items.length > 0 ? deliveryCharge : 0;
+  const delivery = items.length > 0 && subtotal < freeDeliveryMinimum ? deliveryCharge : 0;
 
   return {
     subtotal,

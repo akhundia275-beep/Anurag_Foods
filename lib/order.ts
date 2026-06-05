@@ -53,7 +53,7 @@ export function buildWhatsAppMessage(orderId: string, customer: CustomerDetails,
     ...items.map((item) => `- ${item.product.name} (${item.product.weight}) x ${item.quantity} = Rs ${item.quantity * item.product.price}`),
     `Subtotal: ${formatRupees(bill.subtotal)}`,
     `GST 18%: ${formatRupees(bill.gst)}`,
-    `Delivery: ${formatRupees(bill.delivery)}`,
+    `Delivery: ${bill.delivery === 0 ? "Free" : formatRupees(bill.delivery)}`,
     `Bill Total: ${formatRupees(bill.grandTotal)}`,
     `UTR: ${customer.utr}`,
     `Payment status: Pending Verification`
@@ -116,7 +116,7 @@ export function buildInvoiceHtml(order: LocalOrder) {
     <section class="totals">
       <div class="line"><span>Subtotal</span><strong>${formatRupees(order.bill.subtotal)}</strong></div>
       <div class="line"><span>GST 18%</span><strong>${formatRupees(order.bill.gst)}</strong></div>
-      <div class="line"><span>Delivery</span><strong>${formatRupees(order.bill.delivery)}</strong></div>
+      <div class="line"><span>Delivery</span><strong>${order.bill.delivery === 0 ? "Free" : formatRupees(order.bill.delivery)}</strong></div>
       <div class="line grand"><span>Bill Total</span><span>${formatRupees(order.bill.grandTotal)}</span></div>
     </section>
   </main>
