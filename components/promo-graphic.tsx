@@ -41,7 +41,7 @@ export function PromoGraphic() {
           </div>
         </div>
         <div className="relative min-h-[340px] bg-tealDeep">
-          <Image src={publicAsset("/images/promos/anurag-foods-gfx-1.png")} alt="Anurag Foods frozen snacks platter" fill sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover object-right" />
+          <Image src={publicAsset("/images/promos/anurag-foods-gfx-1.jpg")} alt="Anurag Foods frozen snacks platter" fill sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover object-right" />
           <div className="absolute inset-y-0 left-0 hidden w-40 bg-gradient-to-r from-tealDeep to-transparent lg:block" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-tealDeep/70 to-transparent" />
         </div>

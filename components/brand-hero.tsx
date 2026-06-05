@@ -7,7 +7,7 @@ export function BrandHero() {
     <section className="bg-black">
       <div className="relative mx-auto w-full max-w-[1536px] overflow-hidden">
         <Image
-          src={publicAsset("/images/hero/anurag-foods-dark-hero.png")}
+          src={publicAsset("/images/hero/anurag-foods-dark-hero.jpg")}
           alt="Anurag Foods premium frozen snacks hero"
           width={1536}
           height={1024}

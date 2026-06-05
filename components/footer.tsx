@@ -54,7 +54,7 @@ export function Footer() {
       <div className="footer-glow" />
       <div className="footer-image-shell">
         <Image
-          src={publicAsset("/uploads/Footer_Image.png")}
+          src={publicAsset("/uploads/Footer_Image.jpg")}
           alt="Anurag Foods premium snacks and dumplings"
           fill
           sizes="100vw"
