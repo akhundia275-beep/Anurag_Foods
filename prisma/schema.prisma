@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING_VERIFICATION
+  APPROVED
+  REJECTED
+  PROCESSING
+  DISPATCHED
+  DELIVERED
+}
+
+enum PaymentStatus {
+  PENDING_VERIFICATION
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  mobile    String?
+  password  String?
+  role      Role      @default(CUSTOMER)
+  addresses Address[]
+  orders    Order[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  image       String?
+  icon        String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  description String?
+  weight      String?
+  price       Decimal      @db.Decimal(10, 2)
+  unit        String
+  image       String?
+  isActive    Boolean      @default(true)
+  categoryId  String
+  category    Category     @relation(fields: [categoryId], references: [id])
+  inventory   Inventory?
+  orderItems  OrderItem[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Inventory {
+  id              String   @id @default(cuid())
+  productId       String   @unique
+  product         Product  @relation(fields: [productId], references: [id])
+  quantityOnHand  Int      @default(0)
+  reserved        Int      @default(0)
+  minimumStock    Int      @default(0)
+  storageLocation String?
+  updatedAt       DateTime @updatedAt
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  name      String
+  mobile    String
+  line1     String
+  line2     String?
+  city      String
+  state     String?
+  pincode   String
+  orders    Order[]
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id             String         @id @default(cuid())
+  orderNumber    String         @unique
+  userId         String?
+  user           User?          @relation(fields: [userId], references: [id])
+  addressId      String
+  address        Address        @relation(fields: [addressId], references: [id])
+  status         OrderStatus    @default(PENDING_VERIFICATION)
+  totalAmount    Decimal        @db.Decimal(10, 2)
+  utrNumber      String?
+  notes          String?
+  items          OrderItem[]
+  paymentProofs  PaymentProof[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+}
+
+model PaymentProof {
+  id           String        @id @default(cuid())
+  orderId      String
+  order        Order         @relation(fields: [orderId], references: [id])
+  utrNumber    String
+  screenshot   String
+  status       PaymentStatus @default(PENDING_VERIFICATION)
+  verifiedBy   String?
+  verifiedAt   DateTime?
+  rejectionNote String?
+  createdAt    DateTime      @default(now())
+}
+
+model BulkInquiry {
+  id           String   @id @default(cuid())
+  name         String
+  mobile       String
+  email        String?
+  businessType String
+  message      String
+  status       String   @default("New")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  rating    Int      @default(5)
+  quote     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
