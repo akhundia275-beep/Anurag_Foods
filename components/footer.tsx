@@ -53,6 +53,14 @@ export function Footer() {
     >
       <div className="footer-glow" />
       <div className="footer-brand-panel">
+        <Image
+          src={publicAsset("/uploads/Footer_Image.jpg")}
+          alt=""
+          fill
+          sizes="100vw"
+          className="footer-blended-image"
+          aria-hidden="true"
+        />
         <span className="footer-blob footer-blob-saffron" />
         <span className="footer-blob footer-blob-leaf" />
         <span className="footer-cube footer-cube-one" />

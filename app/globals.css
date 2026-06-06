@@ -444,6 +444,23 @@ textarea {
   pointer-events: none;
 }
 
+.footer-blended-image {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  filter: saturate(0.9) contrast(1.08) blur(0.2px);
+  transform: scale(1.035);
+  mask-image:
+    radial-gradient(circle at 75% 45%, black 0%, black 24%, rgba(0, 0, 0, 0.62) 44%, transparent 76%),
+    linear-gradient(to bottom, transparent 0%, black 18%, black 72%, transparent 100%);
+}
+
+.footer-brand-panel > :not(.footer-blended-image) {
+  position: relative;
+}
+
 .footer-brand-grid {
   position: relative;
   z-index: 2;
@@ -1107,6 +1124,14 @@ textarea {
 
   .footer-cube {
     display: none;
+  }
+
+  .footer-blended-image {
+    opacity: 0.14;
+    object-position: center top;
+    mask-image:
+      radial-gradient(circle at 50% 66%, black 0%, rgba(0, 0, 0, 0.72) 34%, transparent 76%),
+      linear-gradient(to bottom, transparent 0%, black 20%, black 68%, transparent 100%);
   }
 
   .footer-image-shell {
