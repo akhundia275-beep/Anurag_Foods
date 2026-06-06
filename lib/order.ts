@@ -1,5 +1,5 @@
 import type { CartItem } from "@/store/cart";
-import { formatRupees, getBillTotals, gstLabel, type BillTotals } from "@/lib/billing";
+import { deliveryOrigin, formatRupees, getBillTotals, gstLabel, type BillTotals } from "@/lib/billing";
 import { formatPrice } from "@/lib/products";
 
 export type CustomerDetails = {
@@ -9,6 +9,7 @@ export type CustomerDetails = {
   address: string;
   city: string;
   pincode: string;
+  deliveryDistanceKm: string;
   utr: string;
 };
 
@@ -42,13 +43,14 @@ export function createOrderId() {
 }
 
 export function buildWhatsAppMessage(orderId: string, customer: CustomerDetails, items: CartItem[]) {
-  const bill = getBillTotals(items);
+  const bill = getBillTotals(items, { deliveryDistanceKm: Number(customer.deliveryDistanceKm) });
   const lines = [
     `New Anurag Foods Order`,
     `Order ID: ${orderId}`,
     `Customer: ${customer.name}`,
     `Mobile: ${customer.mobile}`,
     `Address: ${customer.address}, ${customer.city} - ${customer.pincode}`,
+    `Distance from ${deliveryOrigin}: ${customer.deliveryDistanceKm} km`,
     `Products:`,
     ...items.map((item) => `- ${item.product.name} (${item.product.weight}) x ${item.quantity} = Rs ${item.quantity * item.product.price}`),
     `Subtotal: ${formatRupees(bill.subtotal)}`,
@@ -108,6 +110,7 @@ export function buildInvoiceHtml(order: LocalOrder) {
     <p><strong>Customer:</strong> ${order.customer.name}<br>
     <strong>Mobile:</strong> ${order.customer.mobile}<br>
     <strong>Address:</strong> ${order.customer.address}, ${order.customer.city} - ${order.customer.pincode}<br>
+    <strong>Distance from ${deliveryOrigin}:</strong> ${order.customer.deliveryDistanceKm} km<br>
     <strong>UTR:</strong> ${order.customer.utr}</p>
     <table>
       <thead><tr><th>Product</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead>

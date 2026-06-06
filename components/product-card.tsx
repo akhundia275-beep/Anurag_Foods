@@ -46,7 +46,7 @@ export function ProductCard({ product }: { product: Product }) {
           <p className="product-card-meta mt-1 text-sm text-tealInk/60">
             {product.category} | {product.weight}
           </p>
-          <p className="product-card-note mt-1 text-xs font-semibold text-tealInk/45">Min cart Rs 5,000 | Free delivery above Rs 10,000</p>
+          <p className="product-card-note mt-1 text-xs font-semibold text-tealInk/45">Min cart Rs 5,000 | Free delivery within 14 km on Rs 10,000+</p>
         </div>
         <div className="product-card-footer flex items-center justify-between gap-4">
           <p className="product-card-price text-base font-black text-tealDeep">{formatPrice(product)}</p>

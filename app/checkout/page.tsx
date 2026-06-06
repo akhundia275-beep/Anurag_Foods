@@ -5,7 +5,7 @@ import Image from "next/image";
 import { CheckCircle2, Copy, Download, MessageCircle } from "lucide-react";
 import { FormEvent, useMemo, useState } from "react";
 import { Button, LinkButton } from "@/components/ui/button";
-import { formatRupees, freeDeliveryMinimum, getBillTotals, gstLabel, minimumOrderValue } from "@/lib/billing";
+import { deliveryCharge, deliveryOrigin, formatRupees, freeDeliveryMaxDistanceKm, freeDeliveryMinimum, getBillTotals, gstLabel, minimumOrderValue } from "@/lib/billing";
 import { buildInvoiceHtml, buildUpiUrl, buildWhatsAppMessage, createOrderId, saveLocalOrder, type CustomerDetails, type LocalOrder, upiId, upiPayeeName, whatsappNumber } from "@/lib/order";
 import { useCart } from "@/store/cart";
 
@@ -16,6 +16,7 @@ const initialCustomer: CustomerDetails = {
   address: "",
   city: "",
   pincode: "",
+  deliveryDistanceKm: "",
   utr: ""
 };
 
@@ -24,7 +25,8 @@ export default function CheckoutPage() {
   const [customer, setCustomer] = useState(initialCustomer);
   const [screenshotName, setScreenshotName] = useState("");
   const [submitted, setSubmitted] = useState<{ order: LocalOrder; opened: boolean } | null>(null);
-  const bill = getBillTotals(items);
+  const deliveryDistanceKm = customer.deliveryDistanceKm ? Number(customer.deliveryDistanceKm) : null;
+  const bill = getBillTotals(items, { deliveryDistanceKm });
   const upiUrl = useMemo(() => buildUpiUrl(bill.grandTotal), [bill.grandTotal]);
   const qrUrl = useMemo(
     () => `https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(upiUrl)}`,
@@ -35,7 +37,17 @@ export default function CheckoutPage() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!items.length || bill.remainingMinimumValue > 0 || !customer.name || !customer.mobile || !customer.address || !customer.utr || !screenshotName) return;
+    if (
+      !items.length ||
+      bill.remainingMinimumValue > 0 ||
+      !customer.name ||
+      !customer.mobile ||
+      !customer.address ||
+      !customer.deliveryDistanceKm ||
+      !customer.utr ||
+      !screenshotName
+    )
+      return;
     const orderId = createOrderId();
     const url = buildWhatsAppMessage(orderId, customer, items);
     const order: LocalOrder = {
@@ -145,12 +157,16 @@ export default function CheckoutPage() {
             ["address", "Delivery address"],
             ["city", "City"],
             ["pincode", "Pincode"],
+            ["deliveryDistanceKm", `Distance from ${deliveryOrigin} in km`],
             ["utr", "UPI UTR number"]
           ].map(([key, label]) => (
             <label key={key} className="grid gap-2 text-sm font-bold">
               {label}
               <input
                 required={key !== "email"}
+                type={key === "deliveryDistanceKm" ? "number" : "text"}
+                min={key === "deliveryDistanceKm" ? "0" : undefined}
+                step={key === "deliveryDistanceKm" ? "0.1" : undefined}
                 value={customer[key as keyof CustomerDetails]}
                 onChange={(event) => update(key as keyof CustomerDetails, event.target.value)}
                 className="h-12 rounded-lg border border-tealDeep/15 px-4 font-normal"
@@ -190,7 +206,9 @@ export default function CheckoutPage() {
               <div className="flex justify-between"><span>{gstLabel}</span><span>{formatRupees(bill.gst)}</span></div>
               <div className="flex justify-between"><span>Delivery</span><span>{bill.delivery === 0 ? "Free" : formatRupees(bill.delivery)}</span></div>
             </div>
-            <p className="mt-3 text-xs font-bold text-white/55">Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal.</p>
+            <p className="mt-3 text-xs font-bold text-white/55">
+              Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal within {freeDeliveryMaxDistanceKm} km from {deliveryOrigin}. Others add {formatRupees(deliveryCharge)}.
+            </p>
           </div>
           <Button type="submit" variant="orange" className="mt-6 w-full">
             Confirm & send WhatsApp

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { PackageCheck, ShoppingBag, Trash2 } from "lucide-react";
 import { Button, LinkButton } from "@/components/ui/button";
 import { ProductImage } from "@/components/product-image";
-import { formatRupees, freeDeliveryMinimum, getBillTotals, gstLabel, minimumOrderValue } from "@/lib/billing";
+import { deliveryCharge, deliveryOrigin, formatRupees, freeDeliveryMaxDistanceKm, freeDeliveryMinimum, getBillTotals, gstLabel, minimumOrderValue } from "@/lib/billing";
 import { formatPrice } from "@/lib/products";
 import { useCart } from "@/store/cart";
 
@@ -165,7 +165,9 @@ export default function CartPage() {
               <span>Delivery</span>
               <span>{formatRupees(bill.delivery)}</span>
             </div>
-            <p className="text-xs text-white/55">Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal.</p>
+            <p className="text-xs text-white/55">
+              Delivery estimate is {formatRupees(deliveryCharge)}. Free delivery applies above {formatRupees(freeDeliveryMinimum)} within {freeDeliveryMaxDistanceKm} km from {deliveryOrigin}.
+            </p>
             <div className="flex justify-between gap-3 border-t border-white/15 pt-2 text-white">
               <span>Bill total</span>
               <span>{formatRupees(bill.grandTotal)}</span>

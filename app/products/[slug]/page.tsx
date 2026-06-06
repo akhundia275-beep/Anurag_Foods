@@ -53,7 +53,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <p className="mt-5 text-3xl font-black text-tealDeep">{formatPrice(product)}</p>
         <div className="mt-8 grid gap-3 rounded-lg bg-white p-5 shadow-soft">
           <p>Minimum checkout subtotal: Rs 5,000</p>
-          <p>Free delivery above Rs 10,000 subtotal</p>
+          <p>Free delivery above Rs 10,000 within 14 km from Mayur Vihar Phase 2, Delhi</p>
           <p>Storage: -18 deg C frozen storage</p>
           <p>Shelf life: 45 days</p>
           <p>Packaging: Food grade bulk-ready packs</p>
