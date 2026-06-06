@@ -410,6 +410,206 @@ textarea {
   animation: footer-pulse 7s ease-in-out infinite;
 }
 
+.footer-brand-panel {
+  position: relative;
+  z-index: 1;
+  min-height: clamp(560px, 58vw, 720px);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(252, 128, 25, 0.24), transparent 18rem),
+    radial-gradient(circle at 82% 26%, rgba(47, 143, 58, 0.28), transparent 22rem),
+    linear-gradient(135deg, #062e35 0%, #102f2f 45%, #101522 100%);
+}
+
+.footer-brand-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at 60% 40%, black, transparent 72%);
+}
+
+.footer-brand-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, transparent 58%, rgba(7, 28, 35, 0.86) 100%),
+    radial-gradient(circle at var(--footer-glow-x, 50%) var(--footer-glow-y, 50%), rgba(252, 128, 25, 0.18), transparent 16rem);
+  pointer-events: none;
+}
+
+.footer-brand-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-height: clamp(470px, 50vw, 610px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.8fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-block: clamp(3rem, 7vw, 5.4rem) 6.5rem;
+}
+
+.footer-logo-badge {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(252, 128, 25, 0.28);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 0.65rem 0.9rem;
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28), 0 0 0 8px rgba(255, 255, 255, 0.035);
+  transform: rotate(-1.5deg);
+}
+
+.footer-primary-cta,
+.footer-secondary-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  padding: 0.88rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 950;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.footer-primary-cta {
+  background: linear-gradient(135deg, #fc8019, #f4a51f);
+  color: #ffffff;
+  box-shadow: 0 18px 38px rgba(252, 128, 25, 0.28);
+}
+
+.footer-secondary-cta {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+}
+
+.footer-primary-cta:hover,
+.footer-secondary-cta:hover {
+  transform: translateY(-3px);
+}
+
+.footer-secondary-cta:hover {
+  border-color: rgba(47, 143, 58, 0.72);
+  background: rgba(47, 143, 58, 0.22);
+  color: #ffffff;
+}
+
+.footer-blob,
+.footer-cube {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 26px 45px rgba(0, 0, 0, 0.24));
+}
+
+.footer-blob {
+  border-radius: 38% 62% 58% 42% / 44% 42% 58% 56%;
+  opacity: 0.9;
+  animation: footer-blob-float 8s ease-in-out infinite;
+}
+
+.footer-blob-saffron {
+  left: -5rem;
+  top: 4rem;
+  width: 12rem;
+  height: 12rem;
+  background: linear-gradient(135deg, #fc8019, #ffcf73);
+}
+
+.footer-blob-leaf {
+  right: 8%;
+  top: 3rem;
+  width: 9rem;
+  height: 9rem;
+  background: linear-gradient(135deg, #2f8f3a, #9bd36a);
+  animation-delay: -2.6s;
+}
+
+.footer-cube {
+  width: 4.8rem;
+  height: 4.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(10px);
+  transform: rotate(18deg) skew(-6deg);
+  animation: footer-cube-drift 7s ease-in-out infinite;
+}
+
+.footer-cube-one {
+  left: 46%;
+  top: 5.8rem;
+}
+
+.footer-cube-two {
+  right: 4%;
+  bottom: 8rem;
+  width: 3.6rem;
+  height: 3.6rem;
+  animation-delay: -3s;
+}
+
+.footer-sketch-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 38px;
+  background:
+    radial-gradient(circle at 72% 20%, rgba(47, 143, 58, 0.26), transparent 12rem),
+    radial-gradient(circle at 22% 78%, rgba(252, 128, 25, 0.2), transparent 14rem),
+    rgba(255, 255, 255, 0.08);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  transform: perspective(900px) rotateY(-7deg) rotateX(4deg);
+}
+
+.footer-sketch-card svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 350px;
+}
+
+.footer-sketch-line,
+.footer-steam-line,
+.footer-sketch-leaf-line {
+  fill: none;
+  stroke: rgba(7, 45, 48, 0.82);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 6;
+}
+
+.footer-steam-line {
+  stroke: rgba(255, 255, 255, 0.72);
+  stroke-width: 8;
+  animation: footer-graphic-steam 5.6s ease-in-out infinite;
+}
+
+.footer-sketch-leaf {
+  fill: rgba(47, 143, 58, 0.9);
+}
+
+.footer-sketch-leaf-line {
+  stroke: rgba(255, 255, 255, 0.72);
+  stroke-width: 5;
+}
+
+.footer-sketch-spark {
+  fill: rgba(252, 128, 25, 0.82);
+  animation: footer-spark-pulse 2.8s ease-in-out infinite;
+  transform-origin: 58px 154px;
+}
+
 .footer-image-shell {
   position: relative;
   z-index: 1;
@@ -445,6 +645,10 @@ textarea {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.72rem;
+}
+
+.footer-icon-dock-brand {
+  z-index: 3;
 }
 
 .footer-image-icon {
@@ -712,6 +916,41 @@ textarea {
   }
 }
 
+@keyframes footer-blob-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-4deg);
+  }
+
+  50% {
+    transform: translate3d(12px, -18px, 0) rotate(8deg);
+  }
+}
+
+@keyframes footer-cube-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(18deg) skew(-6deg);
+  }
+
+  50% {
+    transform: translate3d(-10px, 16px, 0) rotate(31deg) skew(-6deg);
+  }
+}
+
+@keyframes footer-spark-pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.72;
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
 @keyframes footer-steam-rise {
   0%,
   100% {
@@ -830,6 +1069,43 @@ textarea {
   .footer-float,
   .footer-steam,
   .footer-food-graphic {
+    display: none;
+  }
+
+  .footer-brand-panel {
+    min-height: auto;
+  }
+
+  .footer-brand-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-block: 2rem 7.25rem;
+  }
+
+  .footer-brand-copy h2 {
+    font-size: clamp(2.2rem, 10vw, 3.2rem);
+  }
+
+  .footer-sketch-card {
+    transform: none;
+    border-radius: 26px;
+  }
+
+  .footer-sketch-card svg {
+    min-height: 280px;
+  }
+
+  .footer-blob-saffron {
+    left: -6rem;
+    top: 9rem;
+  }
+
+  .footer-blob-leaf {
+    right: -4rem;
+    top: 2rem;
+  }
+
+  .footer-cube {
     display: none;
   }
 
