@@ -472,17 +472,6 @@ textarea {
   padding-block: clamp(3rem, 7vw, 5.4rem) 6.5rem;
 }
 
-.footer-logo-badge {
-  display: inline-grid;
-  place-items: center;
-  border: 1px solid rgba(252, 128, 25, 0.28);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.94);
-  padding: 0.65rem 0.9rem;
-  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28), 0 0 0 8px rgba(255, 255, 255, 0.035);
-  transform: rotate(-1.5deg);
-}
-
 .footer-primary-cta,
 .footer-secondary-cta {
   display: inline-flex;

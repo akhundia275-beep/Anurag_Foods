@@ -67,10 +67,7 @@ export function Footer() {
         <span className="footer-cube footer-cube-two" />
         <div className="container-pad footer-brand-grid">
           <div className="footer-brand-copy">
-            <div className="footer-logo-badge">
-              <Image src={publicAsset("/images/brand/main-logo.png")} alt="Anurag Foods" width={176} height={104} className="h-16 w-auto object-contain" />
-            </div>
-            <p className="mt-6 text-sm font-black uppercase tracking-[0.24em] text-saffron">Packed snacks & dumplings</p>
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-saffron">Packed snacks & dumplings</p>
             <h2 className="mt-3 max-w-2xl text-4xl font-black leading-tight text-white md:text-6xl">
               Frozen food supply with a handmade heart.
             </h2>
