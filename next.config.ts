@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: process.cwd(),
   output: isGitHubPages ? "export" : undefined,
   basePath: isGitHubPages ? "/Anurag_Foods" : undefined,
   assetPrefix: isGitHubPages ? "/Anurag_Foods/" : undefined,

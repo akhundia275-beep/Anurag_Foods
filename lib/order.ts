@@ -43,14 +43,16 @@ export function createOrderId() {
 }
 
 export function buildWhatsAppMessage(orderId: string, customer: CustomerDetails, items: CartItem[]) {
-  const bill = getBillTotals(items, { deliveryDistanceKm: Number(customer.deliveryDistanceKm) });
+  const deliveryDistanceKm = customer.deliveryDistanceKm ? Number(customer.deliveryDistanceKm) : null;
+  const bill = getBillTotals(items, { deliveryDistanceKm });
+  const distanceLabel = deliveryDistanceKm === null ? "Not verified from pincode" : `${customer.deliveryDistanceKm} km`;
   const lines = [
     `New Anurag Foods Order`,
     `Order ID: ${orderId}`,
     `Customer: ${customer.name}`,
     `Mobile: ${customer.mobile}`,
     `Address: ${customer.address}, ${customer.city} - ${customer.pincode}`,
-    `Distance from ${deliveryOrigin}: ${customer.deliveryDistanceKm} km`,
+    `Distance from ${deliveryOrigin}: ${distanceLabel}`,
     `Products:`,
     ...items.map((item) => `- ${item.product.name} (${item.product.weight}) x ${item.quantity} = Rs ${item.quantity * item.product.price}`),
     `Subtotal: ${formatRupees(bill.subtotal)}`,
@@ -110,7 +112,7 @@ export function buildInvoiceHtml(order: LocalOrder) {
     <p><strong>Customer:</strong> ${order.customer.name}<br>
     <strong>Mobile:</strong> ${order.customer.mobile}<br>
     <strong>Address:</strong> ${order.customer.address}, ${order.customer.city} - ${order.customer.pincode}<br>
-    <strong>Distance from ${deliveryOrigin}:</strong> ${order.customer.deliveryDistanceKm} km<br>
+    <strong>Distance from ${deliveryOrigin}:</strong> ${order.customer.deliveryDistanceKm || "Not verified from pincode"}${order.customer.deliveryDistanceKm ? " km" : ""}<br>
     <strong>UTR:</strong> ${order.customer.utr}</p>
     <table>
       <thead><tr><th>Product</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead>

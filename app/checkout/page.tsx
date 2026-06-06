@@ -3,9 +3,10 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { CheckCircle2, Copy, Download, MessageCircle } from "lucide-react";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Button, LinkButton } from "@/components/ui/button";
 import { deliveryCharge, deliveryOrigin, formatRupees, freeDeliveryMaxDistanceKm, freeDeliveryMinimum, getBillTotals, gstLabel, minimumOrderValue } from "@/lib/billing";
+import { getDistanceFromMayurViharByPincode } from "@/lib/delivery-distance";
 import { buildInvoiceHtml, buildUpiUrl, buildWhatsAppMessage, createOrderId, saveLocalOrder, type CustomerDetails, type LocalOrder, upiId, upiPayeeName, whatsappNumber } from "@/lib/order";
 import { useCart } from "@/store/cart";
 
@@ -25,15 +26,53 @@ export default function CheckoutPage() {
   const [customer, setCustomer] = useState(initialCustomer);
   const [screenshotName, setScreenshotName] = useState("");
   const [submitted, setSubmitted] = useState<{ order: LocalOrder; opened: boolean } | null>(null);
+  const [pincodeStatus, setPincodeStatus] = useState<"idle" | "checking" | "found" | "not-found">("idle");
   const deliveryDistanceKm = customer.deliveryDistanceKm ? Number(customer.deliveryDistanceKm) : null;
   const bill = getBillTotals(items, { deliveryDistanceKm });
+  const isFreeDeliveryZone = deliveryDistanceKm !== null && deliveryDistanceKm <= freeDeliveryMaxDistanceKm;
+  const qualifiesForFreeDelivery = bill.subtotal >= freeDeliveryMinimum && isFreeDeliveryZone;
   const upiUrl = useMemo(() => buildUpiUrl(bill.grandTotal), [bill.grandTotal]);
   const qrUrl = useMemo(
     () => `https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(upiUrl)}`,
     [upiUrl]
   );
 
-  const update = (key: keyof CustomerDetails, value: string) => setCustomer((current) => ({ ...current, [key]: value }));
+  const update = (key: keyof CustomerDetails, value: string) =>
+    setCustomer((current) => ({ ...current, [key]: key === "pincode" ? value.replace(/\D/g, "").slice(0, 6) : value }));
+
+  useEffect(() => {
+    const cleanPincode = customer.pincode.trim();
+    if (!/^\d{6}$/.test(cleanPincode)) {
+      setPincodeStatus("idle");
+      setCustomer((current) => (current.deliveryDistanceKm ? { ...current, deliveryDistanceKm: "" } : current));
+      return;
+    }
+
+    let cancelled = false;
+    setPincodeStatus("checking");
+    const timer = window.setTimeout(async () => {
+      try {
+        const distance = await getDistanceFromMayurViharByPincode(cleanPincode);
+        if (cancelled) return;
+        if (distance === null) {
+          setPincodeStatus("not-found");
+          setCustomer((current) => ({ ...current, deliveryDistanceKm: "" }));
+          return;
+        }
+        setPincodeStatus("found");
+        setCustomer((current) => ({ ...current, deliveryDistanceKm: distance.toString() }));
+      } catch {
+        if (cancelled) return;
+        setPincodeStatus("not-found");
+        setCustomer((current) => ({ ...current, deliveryDistanceKm: "" }));
+      }
+    }, 550);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [customer.pincode]);
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,7 +82,8 @@ export default function CheckoutPage() {
       !customer.name ||
       !customer.mobile ||
       !customer.address ||
-      !customer.deliveryDistanceKm ||
+      !customer.pincode ||
+      pincodeStatus === "checking" ||
       !customer.utr ||
       !screenshotName
     )
@@ -157,22 +197,38 @@ export default function CheckoutPage() {
             ["address", "Delivery address"],
             ["city", "City"],
             ["pincode", "Pincode"],
-            ["deliveryDistanceKm", `Distance from ${deliveryOrigin} in km`],
             ["utr", "UPI UTR number"]
           ].map(([key, label]) => (
             <label key={key} className="grid gap-2 text-sm font-bold">
               {label}
               <input
                 required={key !== "email"}
-                type={key === "deliveryDistanceKm" ? "number" : "text"}
-                min={key === "deliveryDistanceKm" ? "0" : undefined}
-                step={key === "deliveryDistanceKm" ? "0.1" : undefined}
+                type="text"
+                inputMode={key === "pincode" ? "numeric" : undefined}
+                maxLength={key === "pincode" ? 6 : undefined}
                 value={customer[key as keyof CustomerDetails]}
                 onChange={(event) => update(key as keyof CustomerDetails, event.target.value)}
                 className="h-12 rounded-lg border border-tealDeep/15 px-4 font-normal"
               />
             </label>
           ))}
+          <div className="rounded-lg bg-cream p-4 text-sm font-bold text-tealInk">
+            {pincodeStatus === "checking" ? "Checking delivery distance from Mayur Vihar Phase 2..." : null}
+            {pincodeStatus === "found" && deliveryDistanceKm !== null ? (
+              <>
+                Approx distance from {deliveryOrigin}: {deliveryDistanceKm} km.{" "}
+                {qualifiesForFreeDelivery
+                  ? "Free delivery applied."
+                  : isFreeDeliveryZone
+                    ? `Add ${formatRupees(Math.max(0, freeDeliveryMinimum - bill.subtotal))} more for free delivery.`
+                    : `Outside ${freeDeliveryMaxDistanceKm} km free-delivery zone, ${formatRupees(deliveryCharge)} delivery added.`}
+              </>
+            ) : null}
+            {pincodeStatus === "not-found"
+              ? `Could not verify this pincode automatically. ${formatRupees(deliveryCharge)} delivery charge will be added.`
+              : null}
+            {pincodeStatus === "idle" ? `Enter 6 digit pincode to check distance from ${deliveryOrigin}.` : null}
+          </div>
           <label className="grid gap-2 text-sm font-bold">
             Payment screenshot
             <input required type="file" accept="image/*" onChange={(event) => setScreenshotName(event.target.files?.[0]?.name ?? "")} className="rounded-lg border border-dashed border-tealDeep/30 bg-cream p-4" />
@@ -207,7 +263,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between"><span>Delivery</span><span>{bill.delivery === 0 ? "Free" : formatRupees(bill.delivery)}</span></div>
             </div>
             <p className="mt-3 text-xs font-bold text-white/55">
-              Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal within {freeDeliveryMaxDistanceKm} km from {deliveryOrigin}. Others add {formatRupees(deliveryCharge)}.
+              Free delivery above {formatRupees(freeDeliveryMinimum)} subtotal within {freeDeliveryMaxDistanceKm} km from {deliveryOrigin}. Pincode decides distance. Others add {formatRupees(deliveryCharge)}.
             </p>
           </div>
           <Button type="submit" variant="orange" className="mt-6 w-full">
